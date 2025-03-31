@@ -1,0 +1,7 @@
+env/
+models/
+__pycache__/
+FLUX.1-dev-Controlnet-Inpainting-Beta/
+FLUX.1-Fill-dev/
+FLUX.1-schnell/
+*.png
