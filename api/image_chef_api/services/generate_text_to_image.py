@@ -1,6 +1,10 @@
 import torch
 from diffusers import FluxPipeline
 
+from api.image_chef_api.utils.environment import Environment
+
+config = Environment().config
+
 
 def generate_text_to_image(prompt: str):
     print(f"PROMPT: {prompt}")
@@ -10,7 +14,7 @@ def generate_text_to_image(prompt: str):
     print(f"DEVICE: {device}")
 
     pipe = FluxPipeline.from_pretrained(
-        "C:\\Users\\633578\\Repositories\\image-chef\\api\\image_chef_api\\models\\FLUX.1-schnell",
+        config.get("FLUX_SCHNELL"),
         torch_dtype=torch.float32
     )
 

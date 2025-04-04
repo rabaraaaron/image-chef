@@ -1,0 +1,19 @@
+FROM node:20 AS builder
+
+WORKDIR /app
+
+# Copy package.json and yarn.lock (if present) first
+COPY client/package.json ./
+
+# Install CA certificates
+RUN apt-get update && apt-get install -y ca-certificates curl yarn
+
+# Install dependencies
+RUN yarn install
+
+# Copy the rest of the application
+COPY client/ ./
+
+EXPOSE 3000
+# CMD [ "tail", "-f", "/dev/null" ]
+CMD ["yarn", "dev"]

@@ -12,6 +12,8 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
+package-lock.json
 node_modules
 dist
 dist-ssr
@@ -28,5 +30,4 @@ dist-ssr
 *.sln
 *.sw?
 
-# Dependencies
-package-lock.json
+

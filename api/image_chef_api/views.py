@@ -6,10 +6,10 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 
-from api.image_chef_api.serializers import ImageToImageSerializer, PromptSerializer
+from api.image_chef_api.serializers import ImageInpaintingSerializer, ImageToImageSerializer, PromptSerializer
+from api.image_chef_api.services.generate_image_to_image import generate_image_to_image
 from api.image_chef_api.services.generate_text_to_image import generate_text_to_image
-from api.image_chef_api.services.compatibility_check import detailed_gpu_memory_check
-from api.image_chef_api.services.text_guided_image_to_image import generate_text_guided_image_to_image
+from api.image_chef_api.services.generate_image_inpainting import generate_text_guided_image_inpainting
 
 
 @api_view(['GET'])
@@ -53,16 +53,13 @@ def text_guided_image_to_image(request):
             status=SERIALIZATION_ERROR_STATUS
         )
     image = request.FILES.get('image')
-    mask = request.FILES.get('mask')
     prompt = request.data.get('prompt')
 
     print(f'IMAGE: {image.name}')
-    print(f'MASK: {mask.name}')
     print(f'PROMPT: {prompt}')
 
-    generate_text_guided_image_to_image(
-        image=image, mask=mask, prompt=prompt)
-    file_path = "flux-fill-dev.png"
+    generate_image_to_image(image=image, prompt=prompt)
+    file_path = "flux-refinement.png"
     if os.path.exists(file_path):
         image = open(file_path, 'rb')
         response = FileResponse(
@@ -74,15 +71,33 @@ def text_guided_image_to_image(request):
 
 
 @api_view(['POST'])
-def text_guided_image_inpainting(request):
-    serializer = PromptSerializer(data=request.data)
-    if serializer.is_valid():
-        print(f'PROMPT: {request.data.get("prompt")}')
-        return Response({'message': 'Received request to inpaint image'})
-    return Response(
-        {'message': SERIALIZATION_ERROR},
-        status=SERIALIZATION_ERROR_STATUS
-    )
+def image_inpainting(request):
+    parser_classes = [MultiPartParser, FormParser]
+    serializer = ImageInpaintingSerializer(data=request.data)
+    if not serializer.is_valid():
+        return Response(
+            {'message': SERIALIZATION_ERROR},
+            status=SERIALIZATION_ERROR_STATUS
+        )
+    image = request.FILES.get('image')
+    mask = request.FILES.get('mask')
+    prompt = request.data.get('prompt')
+
+    print(f'IMAGE: {image.name}')
+    print(f'MASK: {mask.name}')
+    print(f'PROMPT: {prompt}')
+
+    generate_text_guided_image_inpainting(
+        image=image, mask=mask, prompt=prompt)
+    file_path = "flux-fill-dev.png"
+    if os.path.exists(file_path):
+        image = open(file_path, 'rb')
+        response = FileResponse(
+            image,
+            as_attachment=True,
+            filename='generated_image.png'
+        )
+        return response
 
 
 @api_view(['POST'])
