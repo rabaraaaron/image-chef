@@ -61,6 +61,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://your-react-app-domain.com",
+    "https://image-chef-client.purpleground-1a74af37.eastus.azurecontainerapps.io"
 ]
 
 ROOT_URLCONF = 'api.urls'
