@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -58,11 +59,11 @@ MIDDLEWARE = [
 # CORS_ALLOW_ALL_ORIGINS = True
 
 # More secure for production
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "https://your-react-app-domain.com",
-    "https://image-chef-client.purpleground-1a74af37.eastus.azurecontainerapps.io"
-]
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
+# [
+#     "http://localhost:3000",
+#     "https://image-chef-client.purpleground-1a74af37.eastus.azurecontainerapps.io"
+# ]
 
 ROOT_URLCONF = 'api.urls'
 
