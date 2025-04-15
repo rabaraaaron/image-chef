@@ -1,0 +1,14 @@
+FROM python:3.8-slim
+
+COPY generate.py ./
+COPY requirements.txt ./
+
+RUN apt-get update && \
+    apt-get -y install gcc g++ python3-dev libxml2-dev libxml2 pkg-config && \
+    UV_HTTP_TIMEOUT=3000
+
+ENV VIRTUAL_ENV=/usr/local
+RUN pip install uv==0.1.45 && \
+    uv pip install --no-cache-dir -r ./requirements.txt
+
+ENTRYPOINT ["python", "generate.py"]

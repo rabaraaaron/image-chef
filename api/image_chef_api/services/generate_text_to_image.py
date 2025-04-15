@@ -5,6 +5,11 @@ from api.image_chef_api.utils.environment import Environment
 
 config = Environment().config
 
+pipe = FluxPipeline.from_pretrained(
+    config.get("FLUX_SCHNELL"),
+    torch_dtype=torch.float32
+)
+
 
 def generate_text_to_image(prompt: str):
     print(f"PROMPT: {prompt}")
@@ -12,11 +17,6 @@ def generate_text_to_image(prompt: str):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print(f"DEVICE: {device}")
-
-    pipe = FluxPipeline.from_pretrained(
-        config.get("FLUX_SCHNELL"),
-        torch_dtype=torch.float32
-    )
 
     # Change inference step for more refinement
     image = pipe(

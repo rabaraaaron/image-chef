@@ -56,14 +56,7 @@ MIDDLEWARE = [
 ]
 
 # Allow all origins in development
-# CORS_ALLOW_ALL_ORIGINS = True
-
-# More secure for production
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
-# [
-#     "http://localhost:3000",
-#     "https://image-chef-client.purpleground-1a74af37.eastus.azurecontainerapps.io"
-# ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'api.urls'
 

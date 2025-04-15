@@ -1,0 +1,19 @@
+name: image-chef
+
+x-image-chef-job: &image-chef-job-env
+  FLUX_SCHNELL: models/FLUX.1-schnell
+  BLOB_CONNECTION_STRING: DefaultEndpointsProtocol=https;AccountName=aaronrabarastorage;AccountKey=bcyaJA+FqKWZjGhEP/U5PI1vhbtzUBTH0gAV0Jeta4TEo9LzW69D5qdnvSET5rb3vgwgfFYWV4k9+AStT5wvGQ==;EndpointSuffix=core.windows.net
+  PROMPT: A lion and a dinosaur battling
+  CONTAINER_NAME: image-job
+  BLOB_NAME: flux-schnell.png
+
+services:
+  job:
+    build:
+      context: .
+      dockerfile: Dockerfile.job
+    environment:
+      <<: [*image-chef-job-env]
+    volumes:
+      - ../api/image_chef_api/models:/models
+      - ./generate.py:/generate.py

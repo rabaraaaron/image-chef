@@ -1,7 +1,6 @@
 name: image-chef
 
 x-image-chef-api: &image-chef-api-env
-  CORS_ALLOW_ORIGIN: http://localhost:3000,https://image-chef-client.purpleground-1a74af37.eastus.azurecontainerapps.io
   FLUX_SCHNELL: api/image_chef_api/models/FLUX.1-schnell
   FLUX_FILL: api/image_chef_api/FLUX.1-Fill-dev
   FLUX_REFINEMENT: api/image_chef_api/models/FLUX.1-dev-Controlnet-Inpainting-Beta
